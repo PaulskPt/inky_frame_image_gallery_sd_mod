@@ -39,33 +39,32 @@ This example is a modified version of the example:
   When the fifth image of the last group has been displayed,
   the script will cycle to the first first group.
 
-  This example comes with the following image files:
-  +------+-----+-------------------------------------------+
-  | GRP  | IMG | FILENAME                                  |
- --------+-----+-------------------------------------------+
-  |  1   |  1  | /sd/images/jwst1.jpg                      |
-  +------+-----+-------------------------------------------+
-  |  1   |  2  | /sd/images/jwst2.jpg                      |
-  +------------+-------------------------------------------+
-  |  1   |  3  | /sd/images/jwst3.jpg                      |
-  +------+-----+-------------------------------------------+
-  |  1   |  4  | /sd/images/jwst4.jpg                      |
-  +------+-----+-------------------------------------------+
-  |  1   |  5  | /sd/images/jwst5.jpg                      |
-  +------+-----+-------------------------------------------+
-  |  2   |  6  | /sd/images/MSFS2020_C337H_.jpg            |
-  +------+-----+-------------------------------------------+
-  |  2   |  7  | /sd/images/MSFS2020_C337H_2.jpg           |
-  +------+-----+-------------------------------------------+
-  |  2   |  8  | /sd/images/MSFS2020_KittyHawk_E3.jpg      |
-  +------+-----+-------------------------------------------+
-  |  2   |  9  | /sd/images/MSFS2020_Pilatus_Porter_v2.jpg |
-  +------+-----+-------------------------------------------+
-  |  2   | 10  | /sd/images/MSFS2020_Porter_twilight.jpg   |
-  +------+-----+-------------------------------------------+
+  This example comes with the following image files: ```
+  
+    +------+-----+-------------------------------------------+
+    | GRP  | IMG | FILENAME                                  |
+    +------+-----+-------------------------------------------+
+    |  1   |  1  | /sd/images/jwst1.jpg                      |
+    +------+-----+-------------------------------------------+
+    |  1   |  2  | /sd/images/jwst2.jpg                      |
+    +------------+-------------------------------------------+
+    |  1   |  3  | /sd/images/jwst3.jpg                      |
+    +------+-----+-------------------------------------------+
+    |  1   |  4  | /sd/images/jwst4.jpg                      |
+    +------+-----+-------------------------------------------+
+    |  1   |  5  | /sd/images/jwst5.jpg                      |
+    +------+-----+-------------------------------------------+
+    |  2   |  6  | /sd/images/MSFS2020_C337H_.jpg            |
+    +------+-----+-------------------------------------------+
+    |  2   |  7  | /sd/images/MSFS2020_C337H_2.jpg           |
+    +------+-----+-------------------------------------------+
+    |  2   |  8  | /sd/images/MSFS2020_KittyHawk_E3.jpg      |
+    +------+-----+-------------------------------------------+
+    |  2   |  9  | /sd/images/MSFS2020_Pilatus_Porter_v2.jpg |
+    +------+-----+-------------------------------------------+
+    |  2   | 10  | /sd/images/MSFS2020_Porter_twilight.jpg   |
+    +------+-----+-------------------------------------------+ ```
 
-Other document files are in the folder `Docs` of this repo.
-E.g.: 
 
 Disclamer:
 This example has been modified, tested on a pc running MS Windows 11 Pro with an Inky Frame connected via USB-cable.
