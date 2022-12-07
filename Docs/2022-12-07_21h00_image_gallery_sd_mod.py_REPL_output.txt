@@ -1,0 +1,64 @@
+Wednesday 2022-12-07 21h00 utc
+by @PaulskPt
+
+Pimoroni INKY FRAME	
+Example image_gallery_sd.py modified
+
+IDE: Thonny
+
+Shell output:
+
+>>> %Run -c $EDITOR_CONTENT
+
+There are 10 image files (.jpg) on SD-Card in folder '/sd/images':
++-----+-----+--------------------------------------------------+
+| GRP | IMG | FILENAME                                         |
++-----+-----+--------------------------------------------------+
+|  1  |   1 | jwst1                                            |
++-----+-----+--------------------------------------------------+
+|  1  |   2 | jwst2                                            |
++-----+-----+--------------------------------------------------+
+|  1  |   3 | jwst3                                            |
++-----+-----+--------------------------------------------------+
+|  1  |   4 | jwst4                                            |
++-----+-----+--------------------------------------------------+
+|  1  |   5 | jwst5                                            |
++-----+-----+--------------------------------------------------+
+|  2  |   6 | MSFS2020_KittyHawk_E3                            |
++-----+-----+--------------------------------------------------+
+|  2  |   7 | MSFS2020_C337H_                                  |
++-----+-----+--------------------------------------------------+
+|  2  |   8 | MSFS2020_C337H_2                                 |
++-----+-----+--------------------------------------------------+
+|  2  |   9 | MSFS2020_Pilatus_Porter_v2                       |
++-----+-----+--------------------------------------------------+
+|  2  |  10 | MSFS2020_Porter_twilight                         |
++-----+-----+--------------------------------------------------+
+
+Press button A...E to display an image
+Opening image file:   1 '/sd/images/jwst1.jpg'
+Opening image file:   3 '/sd/images/jwst3.jpg'
+Opening image file:   2 '/sd/images/jwst2.jpg'
+Opening image file:   4 '/sd/images/jwst4.jpg'
+Opening image file:   5 '/sd/images/jwst5.jpg'
+Group 1 images shown:
+  1 /sd/images/jwst1.jpg
+  2 /sd/images/jwst2.jpg
+  3 /sd/images/jwst3.jpg
+  4 /sd/images/jwst4.jpg
+  5 /sd/images/jwst5.jpg
+All images of group 1 have been displayed.
+Continuing with the next group.
+Opening image file:   6 '/sd/images/MSFS2020_KittyHawk_E3.jpg'
+Opening image file:   8 '/sd/images/MSFS2020_C337H_2.jpg'
+Opening image file:   7 '/sd/images/MSFS2020_C337H_.jpg'
+Opening image file:  10 '/sd/images/MSFS2020_Porter_twilight.jpg'
+Opening image file:   9 '/sd/images/MSFS2020_Pilatus_Porter_v2.jpg'
+Group 2 images shown:
+  7 /sd/images/MSFS2020_C337H_.jpg
+  8 /sd/images/MSFS2020_C337H_2.jpg
+  9 /sd/images/MSFS2020_Pilatus_Porter_v2.jpg
+ 10 /sd/images/MSFS2020_Porter_twilight.jpg
+  6 /sd/images/MSFS2020_KittyHawk_E3.jpg
+All images have been displayed.
+Continuing with the first group.
