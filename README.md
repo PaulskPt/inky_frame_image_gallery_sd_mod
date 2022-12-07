@@ -36,12 +36,12 @@ This example is a modified version of the example:
   The function that collects and displays the list of image files on the Inky Frame uses a background image from the file: `/sd/files_raster.jpg`.
   For an example of this list see the file: `Inky_Frame_Image_Files_list.jpg` in the folder `Docs` of this repo.
 
-  This example script looks for .jpg image files in the /sd/images folder of the SD-Card
-  The script needs multiples of 5 image files (5, 10, 15, ...)
-  If there is not a multiple of 5 images files the script will print a message and raise a RuntimeError.
-  The images are used in groups of five image files.
+  This example script looks for .jpg image files in the /sd/images folder of the SD-Card. 
+  The script needs multiples of 5 image files (5, 10, 15, ...). 
+  If there is not a multiple of 5 images files the script will print a message and raise a RuntimeError. 
+  The images are used in groups of five image files. 
   After all of the first group of five image files have been displayed,
-  the script will continue with a second group of five image files.
+  the script will continue with a second group of five image files. 
   When the fifth image of the last group has been displayed,
   the script will cycle to the first first group.
 
