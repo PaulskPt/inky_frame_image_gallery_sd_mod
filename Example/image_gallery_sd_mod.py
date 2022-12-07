@@ -50,7 +50,6 @@ import jpegdec
 import uos
 
 
-
 img_dict = {}
 
 # set up the display
@@ -185,10 +184,21 @@ except OSError as e:
     import sdcard
     # set up the SD card
     sd_spi = SPI(0, sck=Pin(18, Pin.OUT), mosi=Pin(19, Pin.OUT), miso=Pin(16, Pin.OUT))
-    sd = sdcard.SDCard(sd_spi, Pin(22))
-    uos.mount(sd, "/sd")
+    try:
+        sd = sdcard.SDCard(sd_spi, Pin(22))
+        uos.mount(sd, "/sd")
+    except OSError as e:
+        s = "No SD-Card found. Exiting..."
+        print(s+"\n")
+        disp_text(s)
+        sys.exit()        
     if sd:
         disp_files()
+    else:
+        s = "No SD-Card found. Exiting..."
+        print(s+"\n")
+        disp_text(s)
+        sys.exit()
         
 print("Press button A...E to display an image")
 
@@ -198,7 +208,6 @@ HOLD_VSYS_EN_PIN = 2
 
 hold_vsys_en_pin = Pin(HOLD_VSYS_EN_PIN, Pin.OUT)
 hold_vsys_en_pin.value(True)
-
 
 
 # setup
