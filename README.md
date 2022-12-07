@@ -25,7 +25,13 @@ Example description:
 This example is a modified version of the example:
 `image_gallery_sd.py` at <https://github.com/pimoroni/pimoroni-pico/tree/main/micropython/examples/inky_frame/image_gallery>
 
-
+  At boot time of the Raspberry Pi Pico W, the MicroPython system will look for a file named `boot.py`. 
+  There is a `boot.py` file added to this repo. The boot.py file is such arranged that it tries to mount an SD-Card (if present).
+  If it doesn't find an SD-Card, is passes control.
+  Next the example script will try to mount an SD-Card. If this fails, the script will print an error message to the Inky Frame display
+  (see the file /Docs/No_SD_Card_error.jpg) and to the REPL.
+  Then the script will end with a sys.exit() because this example cannot run without images files on an SD-Card.
+  
   At startup this example will show on the Inky Frame a list of image files found on the SD-Card in folder /sd/images.
   The function that collects and displays the list of image files on the Inky Frame uses a background image from the file: `/sd/files_raster.jpg`.
   For an example of this list see the file: `Inky_Frame_Image_Files_list.jpg` in the folder `Docs` of this repo.
