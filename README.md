@@ -77,6 +77,7 @@ This example has been modified, tested on a pc running MS Windows 11 Pro with an
 
 This is a 'work-in-progress'. This example does not (yet) have a functionality to easily switch from one group of five image files to another group.
 Neither exists a functionality to individually or randomly select an image file from the image files present on the SD Card.
+Update 2022-12-08: to try I attached an M5 Dual Button I2C device and connected it to the I2C socket #1 of the Inky Frame. The Idea is to use this 'dual button' device to change the group nr (up or down).
 
 Other document sources:
 A file with REPL output: `2022-12-07_21h00_image_gallery_sd_mod.py_REPL_output.txt`
