@@ -2,13 +2,12 @@
 # An offline image gallery that switches between groups of five .jpg images
 # on your SD card (copy them across by plugging your SD into a computer).
 #
-import gc, sys
+import gc, sys, time
 from pimoroni import ShiftRegister
 from picographics import PicoGraphics, DISPLAY_INKY_FRAME
 from machine import Pin
 import jpegdec
 import uos
-import uasyncio  # added by @PaulskPt
 
 # set up the display
 gc.collect()
@@ -87,6 +86,9 @@ else:
     red_int_flag = None
     blu_int_flag = None
 
+# the built-in LED of the Raspberry Pi Pico W
+conn_led = Pin(7, Pin.OUT) 
+bi_led = Pin(25, Pin.OUT)
 # and the activity LED
 activity_led = Pin(6, Pin.OUT)
 activity_led_state = 0
@@ -101,31 +103,37 @@ def blink_activity_led(nr_times):
     curr_state = activity_led_state
     if nr_times is None:
         nr_times = 1
-    
+    delay = 0.5
     if curr_state == 1:
-        activity_led.off()  # first switch the led off
-        uasyncio.sleep(2)
+        #activity_led.off()  # first switch the led off
+        conn_led.value(0)
+        time.sleep(delay)
     
     for _ in range(nr_times):
-        activity_led.on()
-        uasyncio.sleep(2)
-        activity_led.off()
-        uasyncio.sleep(2)
+        #activity_led.on()
+        conn_led.value(1)       
+        time.sleep(delay)
+        #activity_led.off()
+        conn_led.value(0)
+        time.sleep(delay)
         
     if curr_state == 1:  # if the led originally was on, switch it back on
-        activity_led.on()
+        #activity_led.on()
+        conn_led.value(1)
 
 def red_callback(btn_red):
     global red_int_flag, red_debounce_time, btn_press_counter
-    if uasyncio.ticks() - red_debounce_time > 300:
-        red_debounce_time = uasyncio.ticks()
+    if time.ticks_us() - red_debounce_time > 3000:
+        print("Red button pressed.")
+        red_debounce_time = time.ticks_us()
         red_int_flag=1
         btn_press_counter += 1
 
 def blu_callback(btn_blu):
     global blu_int_flag, blu_debounce_time, btn_press_counter
-    if uasyncio.ticks() - blu_debounce_time > 300:
-        blu_debounce_time = uasyncio.ticks()
+    if time.ticks_us() - blu_debounce_time > 3000:
+        print("Blue button pressed.")
+        blu_debounce_time = time.ticks_us()
         blu_int_flag=1
         btn_press_counter += 1
         
@@ -175,11 +183,6 @@ def setup():
     # setup
     activity_led.on()
     activity_led_state = 1
-    # update the image on Inky every time it's powered up
-    # comment these lines out if running on battery power
-    # button_a_led.on()
-    # activity_led_state = 1
-    # display_image(IMAGE_A)
     
 def ck_btns():
     global button_a, button_b, button_c, button_d, button_e
@@ -247,7 +250,7 @@ def main():
                 if grp_idx > (nr_groups):
                     grp_idx = 1
                 blink_activity_led(grp_idx)
-                print(TAG+f"Red button pressed. New group index = {grp_idx}")
+                print(TAG+f"New group index = {grp_idx}")
                 red_int_flag = 0
                 print(TAG+f"red/blue button pressed {btn_press_counter} times")
                 
@@ -256,7 +259,7 @@ def main():
                 if grp_idx < 1:
                     grp_idx = nr_groups
                 blink_activity_led(grp_idx)
-                print(TAG+f"Blue button pressed. New group index = {grp_idx}")
+                print(TAG+f"New group index = {grp_idx}")
                 blu_int_flag = 0
                 print(TAG+f"red/blue button pressed {btn_press_counter} times")
 
@@ -283,6 +286,7 @@ def main():
                     display_image(idx2+1, fn)
                     # go to sleep if on battery power
                     activity_led.off()
+                    conn_led.value(0)
                     activity_led_state = 0
                     hold_vsys_en_pin.init(Pin.IN)
                     if not idx2 in files_shown_dict.keys():
