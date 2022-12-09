@@ -88,7 +88,7 @@ else:
 
 # the built-in LED of the Raspberry Pi Pico W
 conn_led = Pin(7, Pin.OUT) 
-bi_led = Pin(25, Pin.OUT)
+bi_led = Pin("LED", Pin.OUT)
 # and the activity LED
 activity_led = Pin(6, Pin.OUT)
 activity_led_state = 0
@@ -107,33 +107,43 @@ def blink_activity_led(nr_times):
     if curr_state == 1:
         #activity_led.off()  # first switch the led off
         conn_led.value(0)
+        bi_led.off()
         time.sleep(delay)
     
     for _ in range(nr_times):
         #activity_led.on()
-        conn_led.value(1)       
+        conn_led.value(1)
+        bi_led.on()
         time.sleep(delay)
         #activity_led.off()
         conn_led.value(0)
+        bi_led.off()
         time.sleep(delay)
         
     if curr_state == 1:  # if the led originally was on, switch it back on
         #activity_led.on()
         conn_led.value(1)
+        bi_led.on()
 
 def red_callback(btn_red):
     global red_int_flag, red_debounce_time, btn_press_counter
-    if time.ticks_us() - red_debounce_time > 3000:
+    t = time.ticks_ms()
+    t2 = t - red_debounce_time
+    # print(f"red_callback(): time.ticks_ms() - red_debounce_time = {t2}")
+    if t2 >= 3000:
         print("Red button pressed.")
-        red_debounce_time = time.ticks_us()
+        red_debounce_time = t
         red_int_flag=1
         btn_press_counter += 1
 
 def blu_callback(btn_blu):
     global blu_int_flag, blu_debounce_time, btn_press_counter
-    if time.ticks_us() - blu_debounce_time > 3000:
+    t = time.ticks_ms()
+    t2 = t - blu_debounce_time
+    # print(f"blu_callback(): time.ticks_ms() - red_debounce_time = {t2}")
+    if t2 >= 3000:
         print("Blue button pressed.")
-        blu_debounce_time = time.ticks_us()
+        blu_debounce_time = t
         blu_int_flag=1
         btn_press_counter += 1
         
@@ -166,8 +176,11 @@ def disp_text(txt):
     gc.collect()
 
 def setup():
-    global hold_vsys_en_pin, acitivity_led_state
+    global hold_vsys_en_pin, acitivity_led_state, red_debounce_time, blu_debounce_time
 
+    red_debounce_time = time.ticks_ms()
+    blu_debounce_time = red_debounce_time
+    
     print("\nImage gallery SD modified example for Pimoroni Inky Frame")
     if m5_btns_present :
         print("BLUE button <<< Group index >>> RED button")
