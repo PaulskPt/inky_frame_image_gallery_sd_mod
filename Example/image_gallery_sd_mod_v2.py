@@ -27,7 +27,7 @@ img_dict = {  # Hard-coded list of image file names
     2: 'jwst3',
     3: 'jwst4',
     4: 'jwst5',
-    5: 'MSFS2020_C337H',
+    5: 'MSFS2020_C337H_',
     6: 'MSFS2020_C337H_2',
     7: 'MSFS2020_KittyHawk_E3',
     8: 'MSFS2020_Pilatus_Porter_v2',
