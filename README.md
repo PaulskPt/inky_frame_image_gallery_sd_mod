@@ -89,7 +89,7 @@ NOTE ON MEMORY PROBLEMS:
 
 Pimoroni already indicated In their `Getting started with Inky Frame` section `Troubleshooting` sub-section `RAM PROBLEMS`.
 Although this example is not using WiFi, I ran into a mmemory error at line 26 with the command: `j = jpegdec.JPEG(disp)`.
-My solution: I created a `version 2`of this example in which I removed the functions: `Disp_files()`and `Disp_file_list()`. Removed a part in function `setup()`. I 'hard-coded' the list of ten image files into the script.
+My solution: I created a `version 2`of this example in which I removed the functions: `Disp_files()`and `Disp_file_list()`. Removed a part in function `setup()`. I 'hard-coded' the list of ten image files into the script. The Connection LED (in the script named `conn_led`) is used to blink the number of times equal to the current group number, after one of the external buttons have been pressed.
 
 
 License: MIT (see LICENSE file)
