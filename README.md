@@ -18,6 +18,8 @@ d) Pimoroni Github repo <https://github.com/pimoroni/pimoroni-pico>, especially 
 For installing, setting up your Inky Frame and preparing image files to use with this example,
 see the `Getting Started with Inky Frame` <https://learn.pimoroni.com/article/getting-started-with-inky-frame#troubleshooting>.
 
+Copy all the files in the /sd folder to your SD-Card.
+
 
 Example description:
 ====================
@@ -78,10 +80,16 @@ This example has been modified, tested on a pc running MS Windows 11 Pro with an
 This is a 'work-in-progress'. This example does not (yet) have a functionality to easily switch from one group of five image files to another group.
 Neither exists a functionality to individually or randomly select an image file from the image files present on the SD Card.
 
-Update 2022-12-08: to try I attached an M5 Dual Button I2C device and connected it to the I2C socket #1 of the Inky Frame. The Idea is to use this 'dual button' device to change the group nr (up or down).
+Update 2022-12-08: succeeded to connect a M5Stack Dual Button I2C device (via a Seeed 6-port Grove Hub) to the I2C socket #1 of the Inky Frame. These two buttons are used to change the group index (up or down). The button presses are programmed through interrupts (see the image of the hardware connection in the Docs folder).
 
 Other document sources:
 A file with REPL output: `2022-12-07_21h00_image_gallery_sd_mod.py_REPL_output.txt`
+
+NOTE ON MEMORY PROBLEMS: 
+
+Pimoroni already indicated In their `Getting started with Inky Frame` section `Troubleshooting` sub-section `RAM PROBLEMS`.
+Although this example is not using WiFi, I ran into a mmemory error at line 26 with the command: `j = jpegdec.JPEG(disp)`.
+My solution: I created a `version 2`of this example in which I removed the functions: `Disp_files()`and `Disp_file_list()`. Removed a part in function `setup()`. I 'hard-coded' the list of ten image files into the script.
 
 
 License: MIT (see LICENSE file)
