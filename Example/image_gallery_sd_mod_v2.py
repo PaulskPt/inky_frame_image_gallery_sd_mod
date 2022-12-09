@@ -292,7 +292,7 @@ def main():
                     if not idx2 in files_shown_dict.keys():
                         files_shown_dict[idx2] = curr_img
                     if len(files_shown_dict) == 5:
-                        print(f"Group {grp_idx+1} images shown:")
+                        print(f"Group {grp_idx} images shown:")
                         for k,v in files_shown_dict.items():
                             print("{:3d} {:s}".format(k+1, v))
                         grp_idx += 1
