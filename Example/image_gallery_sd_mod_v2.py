@@ -5,13 +5,19 @@
 import gc, sys, time
 from pimoroni import ShiftRegister
 from picographics import PicoGraphics, DISPLAY_INKY_FRAME
-from machine import Pin
+from machine import ADC, Pin
 import jpegdec
 import uos
 
 # set up the display
 gc.collect()
 disp = PicoGraphics(display=DISPLAY_INKY_FRAME)
+
+# these are our reference voltages for a full/empty battery, in volts
+# the values could vary by battery size/manufacturer so you might need to adjust them
+# e.g. for 2xAA or AAA batteries, try max 3.4 min 3.0
+full_battery = 4.2
+empty_battery = 2.8
 
 gc.collect()
 
@@ -44,6 +50,8 @@ SR_CLOCK = 8
 SR_LATCH = 9
 SR_OUT = 10
 selected_group = 0
+
+on_battery = None
 
 hold_vsys_en_pin = None
 
@@ -98,30 +106,38 @@ gc.collect()
 #
 #  blink_activity_led
 #
-def blink_activity_led(nr_times):
+def blink_activity_led(nr_times, activity_led=False, blink_slow=False):
     global activity_led_state
     curr_state = activity_led_state
     if nr_times is None:
         nr_times = 1
-    delay = 0.5
+    if blink_slow:
+        delay = 0.5
+    else:
+        delay = 0.1
+    
     if curr_state == 1:
-        #activity_led.off()  # first switch the led off
+        if activity_led:
+            activity_led.off()  # first switch the led off
         conn_led.value(0)
         bi_led.off()
         time.sleep(delay)
     
     for _ in range(nr_times):
-        #activity_led.on()
+        if activity_led:
+            activity_led.on()
         conn_led.value(1)
         bi_led.on()
         time.sleep(delay)
-        #activity_led.off()
+        if activity_led:
+            activity_led.off()
         conn_led.value(0)
         bi_led.off()
         time.sleep(delay)
         
     if curr_state == 1:  # if the led originally was on, switch it back on
-        #activity_led.on()
+        if activity_led:
+            activity_led.on()
         conn_led.value(1)
         bi_led.on()
 
@@ -153,6 +169,9 @@ if m5_btns_present:
 
 
 def display_image(nr, filename):
+    if j is None:
+        print(f"display_image(): type(j)= {type(j)}")
+        return False
     try:
         if nr != 99:
             print("Opening image file: {:3d} \'{:s}\'".format(nr, filename))
@@ -176,7 +195,7 @@ def disp_text(txt):
     gc.collect()
 
 def setup():
-    global hold_vsys_en_pin, acitivity_led_state, red_debounce_time, blu_debounce_time
+    global hold_vsys_en_pin, acitivity_led_state, red_debounce_time, blu_debounce_time, on_battery
 
     red_debounce_time = time.ticks_ms()
     blu_debounce_time = red_debounce_time
@@ -192,7 +211,39 @@ def setup():
 
     hold_vsys_en_pin = Pin(HOLD_VSYS_EN_PIN, Pin.OUT)
     hold_vsys_en_pin.value(True)
+
+    # set up the ADC that's connected to the system input voltage
+    vsys = ADC(29)
+
+    # on a Pico W we need to pull GP25 high to be able to read vsys
+    # this is because this pin is shared with the wireless module's SPI interface
+    spi_output = (Pin(25, Pin.OUT))
+    spi_output.value(True)
+
+    # how we convert the reading into a voltage
+    conversion_factor = 3 * 3.3 / 65535
+         
+    # convert the raw ADC read into a voltage, and then a percentage
+    voltage = vsys.read_u16() * conversion_factor
+    percentage = 100 * ((voltage - empty_battery) / (full_battery - empty_battery))
+    if percentage > 100:
+        percentage = 100.00
+
+    # monitoring vbus tells us if Inky is being USB powered
+    # it seems to not always identify USB power correctly when run through Thonny?
+    vbus = Pin('WL_GPIO2', Pin.IN)
     
+    # add text
+    if vbus.value():
+        on_battery = False
+        print('USB power!')
+    else:
+        on_battery = True
+        blink_activity_led(5, True, False) # blink the CONN LED, the RPi PICOW LED and the ACTIVITY LED. Blink fast
+        print('Battery power!')
+        print('{:.2f}'.format(voltage) + "v")
+        print('{:.0f}%'.format(percentage))
+        
     # setup
     activity_led.on()
     activity_led_state = 1
@@ -262,7 +313,7 @@ def main():
                 grp_idx += 1
                 if grp_idx > (nr_groups):
                     grp_idx = 1
-                blink_activity_led(grp_idx)
+                blink_activity_led(grp_idx, False, True)
                 print(TAG+f"New group index = {grp_idx}")
                 red_int_flag = 0
                 print(TAG+f"red/blue button pressed {btn_press_counter} times")
@@ -271,7 +322,7 @@ def main():
                 grp_idx -= 1
                 if grp_idx < 1:
                     grp_idx = nr_groups
-                blink_activity_led(grp_idx)
+                blink_activity_led(grp_idx, False, True)
                 print(TAG+f"New group index = {grp_idx}")
                 blu_int_flag = 0
                 print(TAG+f"red/blue button pressed {btn_press_counter} times")
@@ -301,7 +352,10 @@ def main():
                     activity_led.off()
                     conn_led.value(0)
                     activity_led_state = 0
-                    hold_vsys_en_pin.init(Pin.IN)
+                    if on_battery:
+                        # go to sleep until someone pushes a button
+                        # (this will only work if code is saved as main.py and on battery power)
+                        hold_vsys_en_pin.init(Pin.IN)
                     if not idx2 in files_shown_dict.keys():
                         files_shown_dict[idx2] = curr_img
                     if len(files_shown_dict) == 5:
